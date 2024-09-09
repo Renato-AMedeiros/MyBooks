@@ -1,5 +1,6 @@
 
 using Microsoft.Azure.Cosmos;
+using my_library_cosmos_db.Middlewares;
 using my_library_cosmos_db.Services;
 using Newtonsoft.Json;
 
@@ -30,7 +31,6 @@ namespace my_library_cosmos_db
                             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         });
 
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<LibrariesService>();
@@ -44,6 +44,7 @@ namespace my_library_cosmos_db
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware(typeof(ErrorMiddleware));
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
